@@ -53,14 +53,12 @@ function App() {
           {isLogin ? "Login" : "Signup"}
         </button>
 
-        {/* Message */}
         {message && (
           <p className="text-center mt-3 text-sm text-gray-700">
             {message}
           </p>
         )}
 
-        {/* Toggle */}
         <p className="text-center mt-4 text-sm">
           {isLogin ? "Don't have an account?" : "Already have an account?"}
           <span
