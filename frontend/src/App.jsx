@@ -1,11 +1,17 @@
 import { useState } from "react";
 
 function App() {
+  const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSignup = async () => {
-    const res = await fetch("http://localhost:5000/signup", {
+  const handleSubmit = async () => {
+    const url = isLogin
+      ? "http://localhost:5000/login"
+      : "http://localhost:5000/signup";
+
+    const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -14,59 +20,60 @@ function App() {
     });
 
     const data = await res.json();
-    alert(data.message);
-  };
-
-  const handleLogin = async () => {
-    const res = await fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await res.json();
-    alert(data.message);
+    setMessage(data.message);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600">
       
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-80">
-        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
-          Welcome 👋
+      <div className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-xl w-80">
+        
+        <h1 className="text-2xl font-bold text-center mb-4">
+          {isLogin ? "Welcome Back 👋" : "Create Account 🚀"}
         </h1>
 
         <input
           type="text"
           placeholder="Username"
-          className="w-full p-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full p-2 mb-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
           onChange={(e) => setUsername(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-2 mb-6 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="w-full p-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <div className="flex justify-between">
-          <button
-            onClick={handleSignup}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-          >
-            Signup
-          </button>
+        <button
+          onClick={handleSubmit}
+          className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition"
+        >
+          {isLogin ? "Login" : "Signup"}
+        </button>
 
-          <button
-            onClick={handleLogin}
-            className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
+        {/* Message */}
+        {message && (
+          <p className="text-center mt-3 text-sm text-gray-700">
+            {message}
+          </p>
+        )}
+
+        {/* Toggle */}
+        <p className="text-center mt-4 text-sm">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <span
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setMessage("");
+            }}
+            className="text-indigo-600 cursor-pointer ml-1 font-semibold"
           >
-            Login
-          </button>
-        </div>
+            {isLogin ? "Signup" : "Login"}
+          </span>
+        </p>
+
       </div>
 
     </div>
