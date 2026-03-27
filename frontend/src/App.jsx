@@ -31,27 +31,44 @@ function App() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h1>Auth System</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+      
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-80">
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          Welcome 👋
+        </h1>
 
-      <input
-        type="text"
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <br /><br />
+        <input
+          type="text"
+          placeholder="Username"
+          className="w-full p-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br /><br />
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full p-2 mb-6 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button onClick={handleSignup}>Signup</button>
-      <button onClick={handleLogin} style={{ marginLeft: "10px" }}>
-        Login
-      </button>
+        <div className="flex justify-between">
+          <button
+            onClick={handleSignup}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          >
+            Signup
+          </button>
+
+          <button
+            onClick={handleLogin}
+            className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+
     </div>
   );
 }
