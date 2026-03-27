@@ -26,7 +26,7 @@ app.post("/signup", async (req, res) => {
     const user = new User({ username, password });
     await user.save();
 
-    res.json({ message: "User created ✅" });
+    res.json({ message: "User created" });
   } catch (err) {
     res.status(500).json({ message: "Error creating user" });
   }
@@ -39,7 +39,7 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ username, password });
 
     if (user) {
-      res.json({ message: "Login successful ✅" });
+      res.json({ message: "Login successful" });
     } else {
       res.json({ message: "Invalid credentials ❌" });
     }
