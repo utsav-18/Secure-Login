@@ -29,7 +29,7 @@ function App() {
       <div className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-xl w-80">
         
         <h1 className="text-2xl font-bold text-center mb-4">
-          {isLogin ? "Welcome Back 👋" : "Create Account 🚀"}
+          {isLogin ? "Welcome Back!" : "Create Account"}
         </h1>
 
         <input
