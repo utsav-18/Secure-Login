@@ -41,7 +41,7 @@ app.post("/login", async (req, res) => {
     if (user) {
       res.json({ message: "Login successful" });
     } else {
-      res.json({ message: "Invalid credentials ❌" });
+      res.json({ message: "Invalid credentials" });
     }
   } catch (err) {
     res.status(500).json({ message: "Error logging in" });
