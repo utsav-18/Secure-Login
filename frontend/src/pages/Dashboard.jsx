@@ -1,14 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Dashboard() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token) {
       navigate("/");
+    } else {
+      // 🧠 decode token
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      setUsername(payload.username);
     }
   }, [navigate]);
 
@@ -21,7 +26,7 @@ function Dashboard() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-indigo-950 text-white">
       
       <h1 className="text-3xl font-bold mb-4">
-        Welcome to Dashboard 🎉
+        Welcome {username} 🎉
       </h1>
 
       <button

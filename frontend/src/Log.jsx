@@ -41,7 +41,6 @@ function Log({
         localStorage.setItem("token", data.token);
         setAlertType("success");
 
-        // 🚀 redirect
         navigate("/dashboard");
       } else {
         setAlertType("error");
@@ -55,7 +54,7 @@ function Log({
   };
 
   return (
-    <div className="bg-sky-100 p-8 rounded-2xl shadow-xl w-80">
+    <div className="bg-white p-8 rounded-2xl shadow-xl w-80">
       
       <h1 className="text-2xl font-bold text-center mb-4">
         {isLogin ? "Login" : "Signup"}

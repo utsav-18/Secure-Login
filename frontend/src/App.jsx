@@ -21,11 +21,9 @@ function App() {
     <div className="min-h-screen flex items-center justify-center bg-indigo-950">
       
       {showAlert && (
-        <div
-          className={`fixed top-4 right-4 px-6 py-3 rounded-lg text-white ${
-            alertType === "success" ? "bg-green-500" : "bg-red-500"
-          }`}
-        >
+        <div className={`fixed top-4 right-4 px-6 py-3 rounded-lg text-white ${
+          alertType === "success" ? "bg-green-500" : "bg-red-500"
+        }`}>
           {message}
         </div>
       )}

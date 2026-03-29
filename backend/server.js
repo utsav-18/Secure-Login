@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -22,32 +23,49 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-// ✅ Signup
+
+// ✅ SIGNUP (HASH PASSWORD)
 app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = new User({ username, password });
+    // 🔐 hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      username,
+      password: hashedPassword,
+    });
+
     await user.save();
 
     res.json({ message: "User created successfully" });
+
   } catch (err) {
     res.status(500).json({ message: "Error creating user" });
   }
 });
 
-// ✅ Login (WITH TOKEN)
+
+// ✅ LOGIN (COMPARE + TOKEN)
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username, password });
+    const user = await User.findOne({ username });
 
     if (!user) {
-      return res.json({ message: "Invalid credentials ❌" });
+      return res.json({ message: "User not found ❌" });
     }
 
-    // 🔑 Generate token
+    // 🔐 compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.json({ message: "Invalid password ❌" });
+    }
+
+    // 🔑 generate token
     const token = jwt.sign(
       { id: user._id, username: user.username },
       "secretkey",
@@ -64,7 +82,8 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ✅ Server
+
+// ✅ SERVER
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
