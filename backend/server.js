@@ -10,12 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-// ✅ User schema
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -23,13 +21,10 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-
-// ✅ SIGNUP (HASH PASSWORD)
 app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // 🔐 hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
@@ -47,7 +42,6 @@ app.post("/signup", async (req, res) => {
 });
 
 
-// ✅ LOGIN (COMPARE + TOKEN)
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -58,20 +52,18 @@ app.post("/login", async (req, res) => {
       return res.json({ message: "User not found ❌" });
     }
 
-    // 🔐 compare password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.json({ message: "Invalid password ❌" });
     }
 
-    // 🔑 generate token
     const token = jwt.sign(
       { id: user._id, username: user.username },
       "secretkey",
       { expiresIn: "1h" }
     );
-
+    
     res.json({
       message: "Login successful",
       token,
@@ -83,7 +75,6 @@ app.post("/login", async (req, res) => {
 });
 
 
-// ✅ SERVER
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
