@@ -55,7 +55,7 @@ function Log({
   };
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-xl w-80">
+    <div className="bg-sky-100 p-8 rounded-2xl shadow-xl w-80">
       
       <h1 className="text-2xl font-bold text-center mb-4">
         {isLogin ? "Login" : "Signup"}
@@ -64,14 +64,14 @@ function Log({
       <input
         type="text"
         placeholder="Username"
-        className="w-full p-2 mb-3 border rounded"
+        className="w-full p-2 mb-3 border rounded border-gray-900"
         onChange={(e) => setUsername(e.target.value)}
       />
 
       <input
         type="password"
         placeholder="Password"
-        className="w-full p-2 mb-4 border rounded"
+        className="w-full p-2 mb-4 border rounded border-gray-900"
         onChange={(e) => setPassword(e.target.value)}
       />
 

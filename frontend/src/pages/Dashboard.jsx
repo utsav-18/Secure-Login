@@ -18,7 +18,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-400 to-blue-500 text-white">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-indigo-950 text-white">
       
       <h1 className="text-3xl font-bold mb-4">
         Welcome to Dashboard 🎉
