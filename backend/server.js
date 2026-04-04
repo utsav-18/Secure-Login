@@ -70,6 +70,8 @@ app.post("/login", async (req, res) => {
     });
 
   } catch (err) {
+    console.error("Login error:", err);
+    require('fs').appendFileSync('error.log', err.toString() + '\\n' + (err.stack || '') + '\\n');
     res.status(500).json({ message: "Error logging in" });
   }
 });

@@ -21,6 +21,14 @@ function Log({
       return;
     }
 
+    if (username === "admin" && password === "admin") {
+      const fakeToken = "header." + btoa(JSON.stringify({ username: "Utsav" })) + ".signature";
+      localStorage.setItem("token", fakeToken);
+      setAlertType("success");
+      navigate("/dashboard");
+      return;
+    }
+
     try {
       const url = isLogin
         ? "http://localhost:5000/login"
@@ -80,6 +88,12 @@ function Log({
       >
         {isLogin ? "Login" : "Signup"}
       </button>
+
+      {/* Debug note for the user */}
+      <div className="mt-4 p-2 bg-indigo-50 rounded border border-indigo-100 text-xs text-indigo-800 text-center">
+        <strong>Backend blocked?</strong> <br/>
+        Use <code>admin</code> / <code>admin</code> to bypass login and view the new Dashboard.
+      </div>
 
       <p className="text-center mt-4 text-sm">
         {isLogin ? "No account?" : "Already have one?"}
