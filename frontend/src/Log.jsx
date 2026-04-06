@@ -21,7 +21,7 @@ function Log({
       return;
     }
 
-    
+
     try {
       const url = isLogin
         ? "http://localhost:5000/login"
@@ -77,7 +77,7 @@ function Log({
 
       <button
         onClick={handleSubmit}
-        className="w-full bg-indigo-500 text-white py-2 rounded"
+        className="w-full bg-indigo-500 text-white py-2 rounded hover:bg-indigo-700 transition duration-300"
       >
         {isLogin ? "Login" : "Signup"}
       </button>
