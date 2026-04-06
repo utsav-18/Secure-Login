@@ -21,7 +21,6 @@ function Log({
       return;
     }
 
-
     try {
       const url = isLogin
         ? "http://localhost:5000/login"
