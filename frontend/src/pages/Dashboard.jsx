@@ -43,7 +43,7 @@ function Dashboard() {
 
         {/* Welcome Card */}
         <div className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-          
+
           <h2 className="text-2xl font-bold mb-2">
             Welcome, {username || "User"} 👋
           </h2>
