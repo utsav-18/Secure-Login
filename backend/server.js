@@ -10,9 +10,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+/* ================= DB CONNECTION ================= */
+
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 5000,
+})
+.then(() => {
+  console.log("✅ MongoDB Connected");
+
+  // Start server ONLY after DB connects
+  app.listen(process.env.PORT, () => {
+    console.log(`🚀 Server running on port ${process.env.PORT}`);
+  });
+})
+.catch(err => {
+  console.log("❌ DB Connection Error:");
+  console.log(err.message);
+});
+
+/* ================= USER SCHEMA ================= */
 
 const userSchema = new mongoose.Schema({
   username: String,
@@ -20,6 +36,8 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", userSchema);
+
+/* ================= SIGNUP ================= */
 
 app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
@@ -34,13 +52,15 @@ app.post("/signup", async (req, res) => {
 
     await user.save();
 
-    res.json({ message: "User created successfully" });
+    res.json({ message: "User created successfully ✅" });
 
   } catch (err) {
-    res.status(500).json({ message: "Error creating user" });
+    console.error(err);
+    res.status(500).json({ message: "Error creating user ❌" });
   }
 });
 
+/* ================= LOGIN ================= */
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -63,20 +83,14 @@ app.post("/login", async (req, res) => {
       "secretkey",
       { expiresIn: "1h" }
     );
-    
+
     res.json({
-      message: "Login successful",
+      message: "Login successful ✅",
       token,
     });
 
   } catch (err) {
     console.error("Login error:", err);
-    require('fs').appendFileSync('error.log', err.toString() + '\\n' + (err.stack || '') + '\\n');
-    res.status(500).json({ message: "Error logging in" });
+    res.status(500).json({ message: "Error logging in ❌" });
   }
-});
-
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
 });
