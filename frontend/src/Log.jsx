@@ -21,14 +21,7 @@ function Log({
       return;
     }
 
-    if (username === "admin" && password === "admin") {
-      const fakeToken = "header." + btoa(JSON.stringify({ username: "Utsav" })) + ".signature";
-      localStorage.setItem("token", fakeToken);
-      setAlertType("success");
-      navigate("/dashboard");
-      return;
-    }
-
+    
     try {
       const url = isLogin
         ? "http://localhost:5000/login"
