@@ -12,9 +12,10 @@ function Log({
   setShowAlert,
 }) {
   const navigate = useNavigate();
+  const isDisabled = !username.trim() || !password.trim();
 
   const handleSubmit = async () => {
-    if (!username || !password) {
+    if (isDisabled) {
       setMessage("Fill all fields ❗");
       setAlertType("error");
       setShowAlert(true);
@@ -54,44 +55,72 @@ function Log({
   };
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-xl w-80">
-      
-      <h1 className="text-2xl font-bold text-center mb-4">
-        {isLogin ? "Login" : "Signup"}
-      </h1>
+    <div className="w-full max-w-4xl overflow-hidden rounded-2xl border border-indigo-300/20 bg-white shadow-2xl md:grid md:grid-cols-2">
+      <section className="hidden bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-700 p-8 text-white md:block">
+        <p className="text-sm uppercase tracking-[0.18em] text-indigo-200">ShopSphere</p>
+        <h1 className="mt-3 text-3xl font-bold leading-tight">Your secure shopping account</h1>
+        <p className="mt-3 text-sm text-indigo-100">
+          Sign in to continue shopping or create a new account in seconds.
+        </p>
 
-      <input
-        type="text"
-        placeholder="Username"
-        className="w-full p-2 mb-3 border rounded border-gray-900"
-        onChange={(e) => setUsername(e.target.value)}
-      />
+        <ul className="mt-8 space-y-3 text-sm text-indigo-100">
+          <li className="rounded-md border border-indigo-200/30 bg-indigo-700/40 px-3 py-2">Fast login and secure checkout</li>
+          <li className="rounded-md border border-indigo-200/30 bg-indigo-700/40 px-3 py-2">Track orders and saved items</li>
+          <li className="rounded-md border border-indigo-200/30 bg-indigo-700/40 px-3 py-2">Exclusive member-only offers</li>
+        </ul>
+      </section>
 
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full p-2 mb-4 border rounded border-gray-900"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <section className="p-8 sm:p-10">
+        <h2 className="text-2xl font-bold text-slate-900">
+          {isLogin ? "Welcome back" : "Create your account"}
+        </h2>
+        <p className="mt-1 text-sm text-slate-500">
+          {isLogin ? "Login to continue" : "Sign up to start shopping"}
+        </p>
 
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-indigo-500 text-white py-2 rounded hover:bg-indigo-700 transition duration-300"
-      >
-        {isLogin ? "Login" : "Signup"}
-      </button>
+        <div className="mt-6 space-y-4">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Username</label>
+            <input
+              type="text"
+              placeholder="Enter username"
+              value={username}
+              className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
 
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+        </div>
 
-      <p className="text-center mt-4 text-sm">
-        {isLogin ? "No account?" : "Already have one?"}
-        <span
-          onClick={() => setIsLogin(!isLogin)}
-          className="text-indigo-600 ml-1 cursor-pointer"
+        <button
+          onClick={handleSubmit}
+          disabled={isDisabled}
+          className="mt-6 w-full rounded-md bg-indigo-600 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-300"
         >
-          {isLogin ? "Signup" : "Login"}
-        </span>
-      </p>
+          {isLogin ? "Login" : "Sign Up"}
+        </button>
 
+        <p className="mt-5 text-center text-sm text-slate-600">
+          {isLogin ? "No account?" : "Already have one?"}
+          <button
+            type="button"
+            onClick={() => setIsLogin(!isLogin)}
+            className="ml-1 font-semibold text-indigo-600 hover:text-indigo-800"
+          >
+            {isLogin ? "Signup" : "Login"}
+          </button>
+        </p>
+      </section>
     </div>
   );
 }
