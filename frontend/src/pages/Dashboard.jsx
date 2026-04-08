@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 function Dashboard() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const categories = [
     { name: "Electronics", desc: "Latest gadgets and accessories" },
@@ -13,10 +14,12 @@ function Dashboard() {
   ];
 
   const products = [
-    { name: "Wireless Headphones", price: "$99", tag: "Best Seller" },
-    { name: "Smart Watch", price: "$149", tag: "New Arrival" },
-    { name: "Running Shoes", price: "$79", tag: "Limited" },
-    { name: "Skin Care Kit", price: "$59", tag: "Top Rated" },
+    { name: "Wireless Headphones", category: "Electronics", price: 99, oldPrice: 129, rating: 4.8, tag: "Best Seller" },
+    { name: "Smart Watch", category: "Electronics", price: 149, oldPrice: 189, rating: 4.6, tag: "New Arrival" },
+    { name: "Running Shoes", category: "Fashion", price: 79, oldPrice: 99, rating: 4.5, tag: "Limited" },
+    { name: "Skin Care Kit", category: "Beauty", price: 59, oldPrice: 79, rating: 4.7, tag: "Top Rated" },
+    { name: "Minimal Desk Lamp", category: "Home", price: 45, oldPrice: 59, rating: 4.4, tag: "Popular" },
+    { name: "Canvas Travel Bag", category: "Fashion", price: 69, oldPrice: 89, rating: 4.3, tag: "Trending" },
   ];
 
   const benefits = [
@@ -24,6 +27,11 @@ function Dashboard() {
     "Secure checkout with instant confirmation",
     "Easy returns within 7 days",
   ];
+
+  const filteredProducts = products.filter((item) => {
+    const search = searchTerm.toLowerCase();
+    return item.name.toLowerCase().includes(search) || item.category.toLowerCase().includes(search) || item.tag.toLowerCase().includes(search);
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -99,27 +107,66 @@ function Dashboard() {
           </div>
         </section>
 
+        <section className="mt-6 rounded-xl border border-indigo-300/30 bg-white p-5 text-slate-900 shadow-xl">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h3 className="text-lg font-semibold">Search Products</h3>
+            <p className="text-sm text-slate-500">{filteredProducts.length} results found</p>
+          </div>
+
+          <div className="mt-4">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by product, category, or tag..."
+              className="w-full rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-500 focus:border-indigo-500 focus:outline-none"
+            />
+          </div>
+        </section>
+
         <section className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-xl border border-indigo-300/30 bg-white p-5 text-slate-900 shadow-xl">
+          <div className="rounded-xl border border-indigo-300/30 bg-white p-5 text-slate-900 shadow-xl lg:col-span-2">
             <h3 className="text-base font-semibold">Featured Products</h3>
-            <div className="mt-4 space-y-3 text-sm text-slate-700">
-              {products.map((item) => (
-                <div key={item.name} className="flex items-center justify-between rounded-md border border-indigo-100 bg-indigo-50 px-3 py-3">
-                  <div>
-                    <p className="font-medium text-slate-900">{item.name}</p>
-                    <p className="text-xs text-slate-500">{item.tag}</p>
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredProducts.map((item) => (
+                <article key={item.name} className="rounded-lg border border-indigo-100 bg-indigo-50 p-4">
+                  <div className="h-32 rounded-md bg-gradient-to-br from-indigo-200 to-indigo-100" />
+
+                  <div className="mt-3 flex items-start justify-between gap-2">
+                    <div>
+                      <p className="font-medium text-slate-900">{item.name}</p>
+                      <p className="text-xs text-slate-500">{item.category}</p>
+                    </div>
+                    <span className="rounded bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700">{item.tag}</span>
                   </div>
-                  <p className="font-semibold text-indigo-700">{item.price}</p>
-                </div>
+
+                  <div className="mt-2 flex items-center gap-2 text-sm">
+                    <span className="font-semibold text-indigo-700">${item.price}</span>
+                    <span className="text-slate-400 line-through">${item.oldPrice}</span>
+                  </div>
+
+                  <div className="mt-2 flex items-center justify-between">
+                    <p className="text-xs text-slate-600">Rating: {item.rating}/5</p>
+                    <button className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700">
+                      Add to Cart
+                    </button>
+                  </div>
+                </article>
               ))}
+
+              {filteredProducts.length === 0 && (
+                <div className="rounded-lg border border-indigo-100 bg-indigo-50 p-6 text-center text-sm text-slate-600 sm:col-span-2 lg:col-span-3">
+                  No products found for "{searchTerm}".
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="rounded-xl border border-indigo-300/30 bg-white p-5 text-slate-900 shadow-xl">
+          <div className="rounded-xl border border-indigo-300/30 bg-white p-5 text-slate-900 shadow-xl lg:col-span-2">
             <h3 className="text-base font-semibold">Why Shop With Us</h3>
-            <ul className="mt-4 space-y-2 text-sm text-slate-700">
+            <ul className="mt-4 grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-3">
               {benefits.map((item) => (
-                <li key={item} className="rounded-md border border-indigo-100 bg-indigo-50 px-3 py-2">
+                <li key={item} className="rounded-md border border-indigo-100 bg-indigo-50 px-3 py-3">
                   {item}
                 </li>
               ))}
