@@ -28,6 +28,34 @@ function Dashboard() {
     "Easy returns within 7 days",
   ];
 
+  const filteredProducts = products.filter((item) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(search) ||
+      item.category.toLowerCase().includes(search) ||
+      item.tag.toLowerCase().includes(search)
+    );
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setUsername(payload.username);
+      } catch {
+        localStorage.removeItem("token");
+        navigate("/");
+      }
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div className="dashboard-root">
       <header className="header">
@@ -39,7 +67,9 @@ function Dashboard() {
 
           <div className="header-actions">
             <button className="btn secondary">Cart (2)</button>
-            <button onClick={handleLogout} className="btn" style={{marginLeft:8}}>Logout</button>
+            <button onClick={handleLogout} className="btn" style={{ marginLeft: 8 }}>
+              Logout
+            </button>
           </div>
         </div>
       </header>
@@ -50,9 +80,11 @@ function Dashboard() {
           <h2>Discover products made for everyday life</h2>
           <p className="muted">Explore curated picks across categories. Fast delivery and simple checkout.</p>
 
-          <div style={{marginTop:12}}>
+          <div style={{ marginTop: 12 }}>
             <button className="btn">Shop Now</button>
-            <button className="btn secondary" style={{marginLeft:8}}>View Offers</button>
+            <button className="btn secondary" style={{ marginLeft: 8 }}>
+              View Offers
+            </button>
           </div>
         </section>
 
@@ -74,7 +106,7 @@ function Dashboard() {
             <p className="muted">{filteredProducts.length} results found</p>
           </div>
 
-          <div style={{marginTop:8}}>
+          <div style={{ marginTop: 8 }}>
             <input
               type="text"
               value={searchTerm}
@@ -128,6 +160,9 @@ function Dashboard() {
       </main>
     </div>
   );
+}
+
+export default Dashboard;
               {benefits.map((item) => (
                 <li key={item} className="rounded-md border border-indigo-100 bg-indigo-50 px-3 py-3">
                   {item}
