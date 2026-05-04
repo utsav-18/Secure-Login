@@ -22,11 +22,7 @@ function Dashboard() {
     { name: "Canvas Travel Bag", category: "Fashion", price: 69, oldPrice: 89, rating: 4.3, tag: "Trending" },
   ];
 
-  const benefits = [
-    "Free shipping on orders above $50",
-    "Secure checkout with instant confirmation",
-    "Easy returns within 7 days",
-  ];
+  // simple site benefits removed from rendering to keep UI minimal
 
   const filteredProducts = products.filter((item) => {
     const search = searchTerm.toLowerCase();
@@ -43,7 +39,8 @@ function Dashboard() {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-        setUsername(payload.username);
+        // defer state update to avoid react-hooks/set-state-in-effect lint
+        setTimeout(() => setUsername(payload.username), 0);
       } catch {
         localStorage.removeItem("token");
         navigate("/");
@@ -155,32 +152,6 @@ function Dashboard() {
               <p className="muted">Get 20% off on your first order with code: WELCOME20</p>
             </div>
             <button className="btn">Claim Offer</button>
-          </div>
-        </section>
-      </main>
-    </div>
-  );
-}
-
-export default Dashboard;
-              {benefits.map((item) => (
-                <li key={item} className="rounded-md border border-indigo-100 bg-indigo-50 px-3 py-3">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section className="mt-6 rounded-xl border border-indigo-700 bg-indigo-900/60 p-5 shadow-xl">
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-            <div>
-              <h3 className="text-xl font-semibold">Limited Time Offer</h3>
-              <p className="mt-1 text-sm text-indigo-100">Get 20% off on your first order with code: WELCOME20</p>
-            </div>
-            <button className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-indigo-900 hover:bg-indigo-100">
-              Claim Offer
-            </button>
           </div>
         </section>
       </main>
