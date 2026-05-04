@@ -11,21 +11,29 @@ app.use(cors());
 app.use(express.json());
 
 
-mongoose.connect(process.env.MONGO_URI, {
-  serverSelectionTimeoutMS: 5000,
-})
-.then(() => {
-  console.log("MongoDB Connected");
-
-  // Start server ONLY after DB connects
-  app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+const startServer = () => {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
   });
-})
-.catch(err => {
-  console.log("DB Connection Error:");
-  console.log(err.message);
-});
+};
+
+if (process.env.MONGO_URI) {
+  mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+      console.log("MongoDB Connected");
+      startServer();
+    })
+    .catch(err => {
+      console.log("DB Connection Error:");
+      console.log(err.message);
+      // still start server so frontend/dev can run without DB
+      startServer();
+    });
+} else {
+  console.log("MONGO_URI not set — starting server without DB (endpoints will fail without a database)");
+  startServer();
+}
 
 
 const userSchema = new mongoose.Schema({
