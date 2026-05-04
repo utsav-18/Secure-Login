@@ -60,7 +60,6 @@ function Dashboard() {
             <h1 className="text-2xl font-bold">ShopSphere</h1>
             <p className="text-sm text-indigo-200">Welcome, {username || "Guest"}</p>
           </div>
-
           <div className="flex items-center gap-3">
             <button className="rounded-md border border-indigo-300/40 px-4 py-2 text-sm font-medium text-indigo-100 hover:bg-indigo-800/70">
               Cart (2)
