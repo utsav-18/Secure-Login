@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Log({
   isLogin,
@@ -12,6 +13,7 @@ function Log({
   setShowAlert,
 }) {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const isDisabled = !username.trim() || !password.trim();
 
   const handleSubmit = async () => {
@@ -75,12 +77,20 @@ function Log({
           <div className="field">
             <label>Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Enter password"
               value={password}
               className="input"
               onChange={(e) => setPassword(e.target.value)}
             />
+            <label className="show-password-toggle">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={(e) => setShowPassword(e.target.checked)}
+              />
+              Show password
+            </label>
           </div>
         </div>
 
